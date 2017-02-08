@@ -19,9 +19,10 @@ logging.basicConfig(format = '%(asctime)s %(message)s', level = logging.INFO)
 # Set the bucket to store backups in via BUCKET
 
 BUCKET = os.environ.get('BUCKET')
+KEEP   = int(os.environ.get('KEEP', 5))
 
 class GCS:
-    def __init__(self, bucket, keep = 5):
+    def __init__(self, bucket, keep):
         self.keep = keep
         self.storage = storage.Client()
 
@@ -53,7 +54,7 @@ USERNAME  = os.environ.get('MYSQL_USER')
 PASSWORD  = os.environ.get('MYSQL_PASSWORD')
 DB        = os.environ.get('MYSQL_DATABASE')
 
-cloud = GCS(BUCKET)
+cloud = GCS(BUCKET, KEEP)
 
 def backup():
     backup_name = "%s/%s-%s.sql" % (DB, DB, time.strftime("%Y-%m-%d-%H%M%S"))
@@ -69,7 +70,7 @@ def backup():
 
         cloud.upload(f, backup_name)
 
-    cloud.cleanup()
+    cloud.cleanup(DB)
 
 schedule.every(EVERY_N_DAYS).days.at(AT_TIME).do(backup)
 while True:

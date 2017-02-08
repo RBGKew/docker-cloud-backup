@@ -23,6 +23,7 @@ services:
       - BUCKET=kew-db-backups
       - EVERY_N_DAYS=1
       - AT_TIME=12:18
+      - KEEP=3
     links:
       - db
     volumes:

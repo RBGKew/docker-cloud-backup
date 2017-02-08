@@ -9,9 +9,10 @@ It can be configured using the environment variables:
   - `MYSQL_DATABASE`
   - `MYSQL_USER`
   - `MYSQL_PASSWORD`
-  - `BUCKET`
+  - `BUCKET` - Bucket to save dumps to. Must be writable with given credentials
   - `EVERY_N_DAYS` - defaults to 1 (i.e., every day)
   - `AT_TIME` - defaults to 00:00 (midnight)
+  - `KEEP` - Number of backups to keep. Defaults to 5
 
 ## Google cloud storage authentication
 
