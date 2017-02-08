@@ -1,0 +1,32 @@
+version: '2'
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=backup-test
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=password
+    ports:
+      - "23306:3306"
+    volumes:
+      - data:/var/lib/mysql
+
+  backup:
+    build: .
+    image: ${DOCKER_REGISTRY}cloud-backup:0.1.0
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=backup-test
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=password
+      - BUCKET=kew-db-backups
+      - EVERY_N_DAYS=1
+      - AT_TIME=12:18
+    links:
+      - db
+    volumes:
+      - ./secrets/storage-creds.json:/etc/creds.json
+
+volumes:
+  data: {}
