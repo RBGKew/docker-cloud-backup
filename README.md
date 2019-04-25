@@ -24,10 +24,7 @@ is.
 ## Example kubernetes yaml
 
 ```json
-# ===========================================
-# Database deployment, service, and storage
-# ===========================================
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: db
@@ -54,7 +51,7 @@ spec:
                   name: secrets
                   key: mysql-password
         - name: backup
-          image: cloud-backup:0.1.0
+          image: docker-cloud-backup:0.1.0
           volumeMounts:
             - name: sa-keys
               mountPath: /etc/sa-keys
